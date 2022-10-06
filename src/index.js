@@ -5,13 +5,16 @@ const fetchFirstMovie = () => {
         .then(resp => resp.json())
         .then(data => renderFirstMovie(data))
 }
-
+let currentMovie
+const availtix = document.getElementById('ticket-num')
 const renderFirstMovie = movie => {
+    currentMovie = movie
+
     const poster = document.getElementById('poster')
     const title = document.getElementById('title')
     const runtime = document.getElementById('runtime')
     const showtime = document.getElementById('showtime')
-    const availtix = document.getElementById('ticket-num')
+    
     const desc = document.getElementById('film-info')
 
     poster.src = movie.poster
@@ -21,15 +24,15 @@ const renderFirstMovie = movie => {
     availtix.textContent = movie.capacity - movie.tickets_sold
     desc.textContent = movie.description
 
-    const buyButton = document.getElementById('buy-ticket')
-    buyButton.addEventListener('click', e => {
-       
-        if (availtix.textContent > 0) {
-            availtix.textContent -= 1
-        }
-    
-    })
+
 }
+const buyButton = document.getElementById('buy-ticket')
+buyButton.addEventListener('click', e => {
+    if (availtix.textContent > 0) {
+        availtix.textContent -= 1
+
+}})
+
 
 const fetchMovies = () => {
     fetch(URL)
@@ -44,10 +47,15 @@ const iterateMovies = movies => {
 const renderMenu = movie => {
     const title = document.createElement('li')
     const ul = document.getElementById('films')
+    title.className = "film item"
 
     title.textContent = movie.title
 
     ul.append(title)
+
+    title.addEventListener('click', e => {
+        renderFirstMovie(movie)
+    })
 }
 
 
